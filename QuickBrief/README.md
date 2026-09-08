@@ -44,6 +44,20 @@ The trade-off: highest coverage, most complex to explain and test.
 
 ---
 
+## Tech Stack
+
+| Layer | Tool | Role |
+|-------|------|------|
+| **Agent Framework** | [LangGraph](https://github.com/langchain-ai/langgraph) | Orchestrates the agentic workflows — stateful graphs for the bounded ReAct loop (Iter. 2) and multi-agent critique flow (Iter. 3) |
+| **LLM** | OpenAI GPT models | Classifier, Think, Critique, and Response Composer nodes |
+| **Embeddings** | OpenAI Embeddings API | Converts past diagnoses and incident logs into vectors for RAG retrieval |
+| **Vector Store** | [ChromaDB](https://www.trychroma.com/) | Stores and retrieves embedded documents for RAG in Iter. 3 (past diagnoses + incident logs) |
+| **Semantic Layer** | YAML + Python | Defines the data model and compiles intent into SQL — the LLM never writes SQL directly |
+| **Observability** | [Arize AI](https://arize.com/) | Traces every LLM call and data query; captures latency, token usage, and model inputs/outputs for debugging and eval |
+| **Dataset** | [Brazilian E-Commerce (Olist)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) | ~100K orders from a Brazilian marketplace; used to evaluate the agent against real business questions |
+
+---
+
 ## Eval Strategy
 
 We do not ask another AI "does this look right?" We compare the agent's output to an answer key a human computed in advance. Three checks must all pass for a question to count as correct.
